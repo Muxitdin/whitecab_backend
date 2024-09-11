@@ -1,9 +1,10 @@
-import express, { urlencoded } from 'express'
-import dotenv from 'dotenv'
-import cors from 'cors'
-import helmet from 'helmet'
-import auth from "./routes/authRoutes.js"
-import mongoose from 'mongoose'
+const express = require('express');
+const { urlencoded } = express;
+const dotenv = require('dotenv');
+const cors = require('cors');
+const helmet = require('helmet');
+const auth = require('./routes/authRoutes.js');
+const mongoose = require('mongoose');
 
 dotenv.config()
 const app = express()

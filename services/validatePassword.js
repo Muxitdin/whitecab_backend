@@ -1,4 +1,4 @@
-import passwordComplexity from "joi-password-complexity"
+const passwordComplexity = require("joi-password-complexity")
 
 const validatePassword = (password) => {
     const schema = passwordComplexity({
@@ -36,4 +36,4 @@ const validatePassword = (password) => {
     return { valid: true }
 }
 
-export default validatePassword
+module.exports = validatePassword

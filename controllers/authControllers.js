@@ -1,9 +1,9 @@
-import Auth from "../models/Auth.js"
-import bcrypt from "bcrypt"
-import validatePassword from '../services/validatePassword.js'
-import generateToken from '../services/Token.js'
+const Auth = require("../models/Auth.js")
+const bcrypt = require("bcrypt")
+const validatePassword = require('../services/validatePassword.js')
+const generateToken = require('../services/Token.js')
 
-export const getAuth = async (req, res) => {
+const getAuth = async (req, res) => {
     try {
         const foundAuth = await Auth.findById(req.authId)
         if (!foundAuth) return res.status(404).json("Нет такого пользователя")
@@ -14,7 +14,7 @@ export const getAuth = async (req, res) => {
     }
 }
 
-export const register = async (req, res) => {
+const register = async (req, res) => {
     try {
         const { firstname, lastname, phonenumber, password, agreement } = req.body
         const formattedNumber = 998 + phonenumber
@@ -36,7 +36,7 @@ export const register = async (req, res) => {
     }
 }
 
-export const login = async (req, res) => {
+const login = async (req, res) => {
     try {
         const { phonenumber, password } = req.body
         const formattedNumber = 998 + phonenumber
@@ -59,4 +59,10 @@ export const login = async (req, res) => {
     } catch (error) {
         res.status(500).json({ msg: error })
     }
+}
+
+module.exports = {
+    getAuth,
+    register,
+    login
 }
