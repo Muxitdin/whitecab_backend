@@ -16,11 +16,22 @@ app.use(urlencoded({ extended: true }))
 // Built in middleware
 app.use(express.static('public'))
 
+if (process.env.NODE_ENV === 'production') {
+    console.log('Running in production mode');
+    console.log(process.env.NODE_ENV);
+} else {
+    console.log('Running in development mode');
+    console.log(process.env.NODE_ENV);
+}
+
 // Third party middleware
 app.use(helmet())
-if (app.get('env') === 'development') {
-    app.use(cors("https://whitecab.uz/"))
-};
+const corsOptions = {
+    origin: process.env.NODE_ENV === 'development' ? '*' : 'https://whitecab.uz',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}
+app.use(cors(corsOptions))
 
 app.use('/api/auth', auth)
 
