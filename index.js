@@ -19,7 +19,7 @@ app.use(express.static('public'))
 // Third party middleware
 app.use(helmet())
 if (app.get('env') === 'development') {
-    app.use(cors())
+    app.use(cors("https://whitecab.uz/"))
 };
 
 app.use('/api/auth', auth)
