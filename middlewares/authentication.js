@@ -7,9 +7,6 @@ const authentication = (req, res, next) => {
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
         req.authId = decoded?.userId;
-        // console.log("middleware token :", token)
-        // console.log(decoded)
-        // console.log(req.authId)
         next();
     } catch (error) {
         res.status(403).send("Yaroqsiz token!");

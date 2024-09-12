@@ -1,6 +1,4 @@
 const Auth = require("../models/Auth.js")
-const bcrypt = require("bcrypt")
-const validatePassword = require('../services/validatePassword.js')
 const generateToken = require('../services/Token.js')
 
 const getAuth = async (req, res) => {
@@ -16,20 +14,16 @@ const getAuth = async (req, res) => {
 
 const register = async (req, res) => {
     try {
-        const { firstname, lastname, phonenumber, password, agreement } = req.body
+        const { firstname, lastname, phonenumber, agreement } = req.body
         const formattedNumber = 998 + phonenumber
-        console.log(firstname, lastname, phonenumber, password, agreement)
+        console.log(firstname, lastname, phonenumber, agreement)
         console.log(formattedNumber)
 
         const user = await Auth.findOne({ phonenumber: formattedNumber })
         if (user) return res.status(400).json({ msg: "Пользователь с таким номером телефона уже существует" })
 
-        const result = validatePassword(password)
-        if (!result.valid) return res.status(400).json({ msg: result.errors[0] })
-
-        const hashedPassword = await bcrypt.hash(password, 10)
-
-        const newUser = await Auth.create({ firstname, lastname, phonenumber: formattedNumber, password: hashedPassword, agreement })
+        const newUser = await Auth.create({ firstname, lastname, phonenumber: formattedNumber, agreement })
+        console.log("🚀 ~ register ~ newUser:", newUser)
         res.status(201).json({ msg: "Пользователь зарегистрирован успешно", user: newUser })
     } catch (error) {
         res.status(500).json({ msg: error })
@@ -38,20 +32,13 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
     try {
-        const { phonenumber, password } = req.body
+        const { phonenumber } = req.body
         const formattedNumber = 998 + phonenumber
-        console.log("🚀 ~ login ~ password:", password)
-        console.log("🚀 ~ login ~ phonenumber:", phonenumber)
-        console.log("🚀 ~ login ~ formattedNumber:", formattedNumber)
 
         const user = await Auth.findOne({ phonenumber: formattedNumber })
         console.log("🚀 ~ login ~ user:", user)
 
         if (!user) return res.status(400).json({ msg: "Пользователь с таким номером телефона не найден" })
-
-        const isPassEqual = await bcrypt.compare(password, user.password)
-        console.log("🚀 ~ login ~ isPassEqual:", isPassEqual)
-        if (!isPassEqual) return res.status(400).json({ msg: "Неверный пароль" })
 
         const token = generateToken(user._id)
 
