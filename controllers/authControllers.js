@@ -1,3 +1,4 @@
+const sendMail = require('../config/sendMail.js')
 const Auth = require("../models/Auth.js")
 const generateToken = require('../services/Token.js')
 
@@ -15,7 +16,8 @@ const getAuth = async (req, res) => {
 const register = async (req, res) => {
     try {
         const { firstname, lastname, phonenumber, agreement } = req.body
-        const formattedNumber = 998 + phonenumber
+        const result = '998' + String(phonenumber)
+        const formattedNumber = parseInt(result)
         console.log(firstname, lastname, phonenumber, agreement)
         console.log(formattedNumber)
 
@@ -24,6 +26,7 @@ const register = async (req, res) => {
 
         const newUser = await Auth.create({ firstname, lastname, phonenumber: formattedNumber, agreement })
         console.log("🚀 ~ register ~ newUser:", newUser)
+        sendMail({ phonenumber: formattedNumber, fullname: firstname + " " + lastname })
         res.status(201).json({ msg: "Пользователь зарегистрирован успешно", user: newUser })
     } catch (error) {
         res.status(500).json({ msg: error })
