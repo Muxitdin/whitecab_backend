@@ -1,3 +1,6 @@
+const dotenv = require('dotenv')
+dotenv.config()
+
 module.exports = function (mailTitle, mailText) {
     const mailOptions = {
         from: process.env.EMAIL,
