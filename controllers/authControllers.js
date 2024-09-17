@@ -1,4 +1,5 @@
-const sendMail = require('../config/sendMail.js')
+// const sendMail = require('../config/sendMail.js')
+const sendRegistrationData = require('../config/tgbot.js')
 const Auth = require("../models/Auth.js")
 const generateToken = require('../services/Token.js')
 
@@ -26,7 +27,8 @@ const register = async (req, res) => {
 
         const newUser = await Auth.create({ firstname, lastname, phonenumber: formattedNumber, agreement })
         console.log("🚀 ~ register ~ newUser:", newUser)
-        sendMail({ phonenumber: formattedNumber, fullname: firstname + " " + lastname })
+        sendRegistrationData({ name: firstname + " " + lastname, phone: formattedNumber })
+        // sendMail({ phonenumber: formattedNumber, fullname: firstname + " " + lastname })
         res.status(201).json({ msg: "Пользователь зарегистрирован успешно", user: newUser })
     } catch (error) {
         res.status(500).json({ msg: error })

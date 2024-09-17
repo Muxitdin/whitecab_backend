@@ -1,9 +1,11 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const { urlencoded } = express;
 const dotenv = require('dotenv');
 const cors = require('cors');
 const helmet = require('helmet');
 const auth = require('./routes/authRoutes.js');
+const telegram = require('./routes/telegramRoutes.js');
 const mongoose = require('mongoose');
 
 dotenv.config()
@@ -11,6 +13,7 @@ const app = express()
 
 // Middleware
 app.use(express.json())
+app.use(bodyParser.json());
 app.use(urlencoded({ extended: true }))
 
 // Built in middleware
@@ -34,6 +37,7 @@ const corsOptions = {
 app.use(cors(corsOptions))
 
 app.use('/api/auth', auth)
+app.use('/api/telegram', telegram)
 
 // Asosiy route
 app.get('/', (_, res) => {
@@ -47,7 +51,7 @@ const runCode = async () => {
     try {
         await mongoose.connect(process.env.MONGO_URI)
         app.listen(port, () => {
-            console.log(`http://localhost:${port}/`)
+            console.log(`${process.env.SERVER_URL}`)
         })
     } catch (error) {
         console.log(error)
