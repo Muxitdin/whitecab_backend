@@ -27,7 +27,7 @@ const register = async (req, res) => {
 
         const newUser = await Auth.create({ firstname, lastname, phonenumber: formattedNumber, agreement })
         console.log("🚀 ~ register ~ newUser:", newUser)
-        sendRegistrationData({ name: firstname + " " + lastname, phone: formattedNumber })
+        await sendRegistrationData({ name: firstname + " " + lastname, phone: formattedNumber })
         // sendMail({ phonenumber: formattedNumber, fullname: firstname + " " + lastname })
         res.status(201).json({ msg: "Пользователь зарегистрирован успешно", user: newUser })
     } catch (error) {
