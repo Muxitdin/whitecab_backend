@@ -1,32 +1,20 @@
-const Bottleneck = require('bottleneck');
+require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
-const token = '6545177490:AAEA9VD7RMAGNhDA0khZ6cJ2FwC8HQENvbg';
+const token = process.env.TELEGRAM_BOT_TOKEN;
 const bot = new TelegramBot(token);
-const chatId = '2144613960';
+const chatId = process.env.TELEGRAM_CHAT_ID;
 
-bot.setWebHook(`${process.env.SERVER_URL}/api/telegram/bot-path`);
-
-const limiter = new Bottleneck({
-    minTime: 1000  // Минимальное время между запросами (1 секунда)
-});
-
-const sendMessage = limiter.wrap((chatId, message) => {
-    return bot.sendMessage(chatId, message);
-});
+bot.deleteWebHook()
+    .then(() => console.log('Webhook deleted'))
+    .catch(error => console.error('Error deleting webhook:', error));
 
 async function sendRegistrationData(userData) {
   const message = `Новый пользователь зарегистрирован:\n\nИмя: ${userData.name}\nТелефон: +${userData.phone}`;
   
-  sendMessage(chatId, message)
+  bot.sendMessage(chatId, message)
     .then(() => console.log('Сообщение отправлено'))
     .catch(error => {
-        if (error.response && error.response.body && error.response.body.parameters) {
-            const retryAfter = error.response.body.parameters.retry_after;
-            console.log(`Повторная попытка через ${retryAfter} секунд`);
-            setTimeout(() => sendMessage(chatId, message), retryAfter * 1000);
-        } else {
-            console.error('Ошибка отправки сообщения', error);
-        }
+        console.error('Ошибка отправки сообщения', error);
     });
 }
 

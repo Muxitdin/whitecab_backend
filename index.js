@@ -5,7 +5,6 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const helmet = require('helmet');
 const auth = require('./routes/authRoutes.js');
-const telegram = require('./routes/telegramRoutes.js');
 const mongoose = require('mongoose');
 
 dotenv.config()
@@ -37,7 +36,6 @@ const corsOptions = {
 app.use(cors(corsOptions))
 
 app.use('/api/auth', auth)
-app.use('/api/telegram', telegram)
 
 // Asosiy route
 app.get('/', (_, res) => {
