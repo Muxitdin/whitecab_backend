@@ -14,7 +14,7 @@ const sendMessage = limiter.wrap((chatId, message) => {
     return bot.sendMessage(chatId, message);
 });
 
-module.exports = async function sendRegistrationData(userData) {
+async function sendRegistrationData(userData) {
   const message = `Новый пользователь зарегистрирован:\n\nИмя: ${userData.name}\nТелефон: +${userData.phone}`;
   
   sendMessage(chatId, message)
@@ -30,4 +30,7 @@ module.exports = async function sendRegistrationData(userData) {
     });
 }
 
-module.exports = bot;
+module.exports = {
+    sendRegistrationData,
+    bot
+};
