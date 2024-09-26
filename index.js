@@ -30,7 +30,7 @@ if (process.env.NODE_ENV === 'production') {
 // Third party middleware
 app.use(helmet())
 const corsOptions = {
-    origin: process.env.NODE_ENV === 'development' ? '*' : 'https://whitecab.uz',
+    origin: process.env.NODE_ENV === 'development' ? '*' : ['https://whitecab.uz', 'https://www.whitecab.uz'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 }
