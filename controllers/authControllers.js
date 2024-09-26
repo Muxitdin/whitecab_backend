@@ -1,5 +1,5 @@
 // const sendMail = require('../config/sendMail.js')
-const sendRegistrationData = require('../config/tgbot.js')
+const { sendRegistrationData } = require('../config/tgbot.js')
 const Auth = require("../models/Auth.js")
 const generateToken = require('../services/Token.js')
 

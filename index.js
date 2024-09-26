@@ -6,6 +6,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const auth = require('./routes/authRoutes.js');
 const mongoose = require('mongoose');
+const { bot } = require('./config/tgbot.js')
 
 dotenv.config()
 const app = express()
@@ -36,6 +37,7 @@ const corsOptions = {
 app.use(cors(corsOptions))
 
 app.use('/api/auth', auth)
+app.use(bot.webhookCallback(`/bot${process.env.TELEGRAM_BOT_TOKEN}`));
 
 // Asosiy route
 app.get('/', (_, res) => {
@@ -43,7 +45,7 @@ app.get('/', (_, res) => {
 })
 
 
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 3000
 
 const runCode = async () => {
     try {
