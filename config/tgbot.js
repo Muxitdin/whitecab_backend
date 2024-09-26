@@ -8,6 +8,14 @@ const bot = new Telegraf(token);
 const WEBHOOK_URL = process.env.SERVER_URL
 bot.telegram.setWebhook(`${WEBHOOK_URL}/bot${process.env.TELEGRAM_BOT_TOKEN}`);
 
+bot.start((ctx) => {
+    ctx.reply("Добро пожаловать! Если вы являетесь админом, то отсюда вы можете получать уведомления о новых регистрациях на платформе www.whitecab.uz .")
+})
+
+bot.hears(/.+/, (ctx) => {
+    ctx.reply("Данный бот не предназначен для прямого общения, однако, если у вас возникли вопросы или потребуется помощь, пожалуйста, свяжитесь со службой поддержки. @cnqrorxd ");
+});
+
 async function sendRegistrationData(userData) {
     const message = `Новый пользователь зарегистрирован:\n\nИмя: ${userData.name}\nТелефон: +${userData.phone}`;
 
